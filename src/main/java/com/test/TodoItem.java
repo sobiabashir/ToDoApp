@@ -1,84 +1,84 @@
 package com.test;
 
-import java.util.Date;
+import java.util.Objects;
 
 public class TodoItem {
-    private int toDoItem_id;
-    private String title;
-    private String taskDescription;
-    private Date deadline;
-    private boolean done;
-    private Person creatorOfTask;
+    private String description;
+    private boolean completed;
+    private int priority;
+    private Person createdBy;
 
-    ////to add constructor
+    // Constructor
+    public TodoItem(String description, boolean completed, int priority, Person createdBy) {
+        setDescription(description);
+        setCompleted(completed);
+        setPriority(priority);
+        setCreatedBy(createdBy);
+    }
 
-    public TodoItem(int toDoItem_id, String title, String description, Date deadline, Person creator) {
-        if (title == null || title.isEmpty() || deadline == null) {
-            throw new IllegalArgumentException("Title and deadline cannot be null or empty");
+    // Getters and Setters
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        if (description == null || description.isEmpty()) {
+            throw new IllegalArgumentException("Description cannot be null or empty");
         }
-        this.toDoItem_id = toDoItem_id;
-        this.title = title;
-        this.taskDescription = description;
-        this.deadline = deadline;
-        this.creatorOfTask = creator;
-    }
-    /////////////
-
-    ///////getter setter////////////
-
-
-    public int getToDoItem_id() {
-        return toDoItem_id;
+        this.description = description;
     }
 
-    public String getTitle() {
-        return title;
+    public boolean isCompleted() {
+        return completed;
     }
 
-    public String getTaskDescription() {
-        return taskDescription;
+    public void setCompleted(boolean completed) {
+        this.completed = completed;
     }
 
-    public Date getDeadline() {
-        return deadline;
+    public int getPriority() {
+        return priority;
     }
 
-    public Person getCreatorOfTask() {
-        return creatorOfTask;
+    public void setPriority(int priority) {
+        if (priority < 0) {
+            throw new IllegalArgumentException("Priority cannot be negative");
+        }
+        this.priority = priority;
     }
 
-    public void setTitle(String title) {
-        this.title = title;
+    public Person getCreatedBy() {
+        return createdBy;
     }
 
-    public void setTaskDescription(String taskDescription) {
-        this.taskDescription = taskDescription;
+    public void setCreatedBy(Person createdBy) {
+        if (createdBy == null) {
+            throw new IllegalArgumentException("CreatedBy cannot be null");
+        }
+        this.createdBy = createdBy;
     }
 
-    public void setDeadline(Date deadline) {
-        this.deadline = deadline;
+    // Override toString(), equals(), and hashCode()
+    @Override
+    public String toString() {
+        return "TodoItem{" +
+                "description='" + description + '\'' +
+                ", completed=" + completed +
+                ", priority=" + priority +
+                ", createdBy=" + createdBy +
+                '}';
     }
 
-    public void setDone(boolean done) {
-       this.done = done;
+    @Override
+    public int hashCode() {
+        return Objects.hash(description, completed, priority, createdBy);
     }
 
-    public void setCreatorOfTask(Person creatorOfTask) {
-        this.creatorOfTask = creatorOfTask;
-    }
-
-
-    ////////// methods///////
-    public boolean isOverdue() {
-        Date currentDate = new Date();
-        return currentDate.after(deadline);
-    }
-    public boolean isDone() {
-        return done;
-    }
-
-
-    public String getSummary(){
-        return "{id: " + toDoItem_id + ", Title: " + title + " "  + ", Description: " + taskDescription + ", Completed: " + done + ", Creator: " + (creatorOfTask != null ? creatorOfTask.getSummary() : "None") + "}";
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        TodoItem todoItem = (TodoItem) o;
+        return completed == todoItem.completed && priority == todoItem.priority && Objects.equals(description, todoItem.description) && Objects.equals(createdBy, todoItem.createdBy);
     }
 }

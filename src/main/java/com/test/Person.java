@@ -1,54 +1,47 @@
 package com.test;
 
-public class Person {
-   private int personID;
-   private String firstName;
-   private String lastName;
-   private String email;
+import java.util.Objects;
 
-   /// to add constructor
+public final class Person extends AppUser {
+   private AppUser credentials;
 
-   public Person(int id, String firstName, String lastName, String email) {
-      if (firstName == null || lastName == null || email == null) {
-         throw new IllegalArgumentException("First name, last name, and email cannot be null");
+   // Constructor
+   public Person(AppUser credentials) {
+       super();
+       setCredentials(credentials);
+   }
+
+   // Getters and Setters
+   public AppUser getCredentials() {
+      return credentials;
+   }
+
+   public void setCredentials(AppUser credentials) {
+      if (credentials == null) {
+         throw new IllegalArgumentException("Credentials cannot be null");
       }
-      this.personID = id;
-      this.firstName = firstName;
-      this.lastName = lastName;
-      this.email = email;
+      this.credentials = credentials;
    }
 
-   public Person() {
-
+   // Override equals() and hashCode()
+   @Override
+   public int hashCode() {
+      return Objects.hash(credentials);
    }
 
-   //////
-   public int getIdPerson() {
-      return personID;
-   }
-   public String getFirstName() {
-      return firstName;
-   }
-   public String getLastName() {
-      return lastName;
-   }
-   public String getEmail() {
-      return email;
-   }
-   public String getSummary(){
-      return "{id: " + personID + ", name: " + firstName + " " + lastName + ", email: " + email + "}";
-  }
-
-   public void setFirstName(String firstName) {
-      this.firstName = firstName;
+   @Override
+   public boolean equals(Object o) {
+      if (this == o) return true;
+      if (o == null || getClass() != o.getClass()) return false;
+      Person person = (Person) o;
+      return Objects.equals(credentials, person.credentials);
    }
 
-   public void setLastName(String lastName) {
-      this.lastName = lastName;
+   // Override toString()
+   @Override
+   public String toString() {
+      return "Person{" +
+              "credentials=" + credentials +
+              '}';
    }
-
-   public void setEmail(String email) {
-      this.email = email;
-   }
-
 }

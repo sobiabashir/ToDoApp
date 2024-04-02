@@ -1,55 +1,78 @@
 package com.test;
-import java.util.Date;
-public class TodoItemTask{
-    private int todoTask_Id;
-    private boolean assigned;
-    private TodoItem todoItem;
-    private Person assignee;
+
+import java.util.Objects;
+
+public class TodoItemTask {
+    private String task;
+    private boolean completed;
+    private Person assignedTo;
 
     // Constructor
-    public TodoItemTask(int id, TodoItem todoItem, Person assignee) {
-        this.todoTask_Id = id;
-        this.todoItem = todoItem;
-        this.assignee = assignee;
-        this.assigned = (assignee != null);
+
+   public TodoItemTask(String task, boolean completed, Person assignedTo) {
+        setTask(task);
+        setCompleted(completed);
+        setAssignedTo(assignedTo);
+    }
+    // Getters and Setters
+    public String getTask() {
+        return task;
     }
 
-    // Getters and setters
-    public int getId() {
-        return todoTask_Id;
+    public void setTask(String task) {
+        if (task == null || task.isEmpty()) {
+            throw new IllegalArgumentException("Task cannot be null or empty");
+        }
+        this.task = task;
     }
 
-    public boolean isAssigned() {
-        return assigned;
+    public boolean isCompleted() {
+        return completed;
     }
 
-    public void setAssigned(boolean assigned) {
-        this.assigned = assigned;
+    public void setCompleted(boolean completed) {
+        this.completed = completed;
     }
 
-    public TodoItem getTodoItem() {
-        return todoItem;
+    public Person getAssignedTo() {
+        return assignedTo;
     }
 
-    public void setTodoItem(TodoItem todoItem) {
-        this.todoItem = todoItem;
+    public void setAssignedTo(AppUser assignedTo) {
+        if (assignedTo == null) {
+            throw new IllegalArgumentException("AssignedTo cannot be null");
+        }
+        this.assignedTo = (Person) assignedTo;
     }
 
-    public Person getAssignee() {
-        return assignee;
+    // Override toString(), equals(), and hashCode()
+
+
+
+    @Override
+    public String toString() {
+        String assignedToName = (assignedTo != null) ? assignedTo.getCredentials().getUsername() : "Unassigned";
+        return "TodoItemTask{" +
+                "task='" + task + '\'' +
+                ", completed=" + completed +
+                ", assignedTo=" + assignedToName +
+                '}';
     }
 
-    public void setAssignee(Person assignee) {
-        this.assignee = assignee;
-        this.assigned = (assignee != null);
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(task, completed, assignedTo);
     }
 
-    // getSummary method
-
-    public String getSummary() {
-        String assigneeSummary = assignee != null ? assignee.getSummary() : "None";
-        return "{id: " + todoTask_Id + ", assigned: " + assigned + ", todoItem: {id: " + todoItem.getToDoItem_id() + ", Title: " + todoItem.getTitle() + ", Description: " + todoItem.getTaskDescription() + ", Completed: " + todoItem.isDone() + "}, assignee: " + assigneeSummary + "}";
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        TodoItemTask that = (TodoItemTask) o;
+        return completed == that.completed && Objects.equals(task, that.task) && Objects.equals(assignedTo, that.assignedTo);
     }
-
-
+    public boolean isAssignedToUser(AppUser user) {
+        return assignedTo != null && assignedTo.equals(user);
+    }
 }
