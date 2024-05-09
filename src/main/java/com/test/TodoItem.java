@@ -1,38 +1,72 @@
 package com.test;
 
+import java.time.LocalDate;
 import java.util.Objects;
 
 public class TodoItem {
-    private String description;
-    private boolean completed;
+    public int getTodoId() {
+        return todoId;
+    }
+
+    public void setTodoId(int todoId) {
+        this.todoId = todoId;
+    }
+
+    private int todoId;
+    private String title;
+    private boolean completed=false;
     private int priority;
     private Person createdBy;
+    private LocalDate AssignedDate;
+    private LocalDate deadline;
+
+
+
+
+    public void setAssignedDate(LocalDate assignedDate) {
+        AssignedDate = LocalDate.now();
+    }
+
+    public LocalDate getAssignedDate() {
+        return AssignedDate;
+    }
+
+    public void setDeadline(LocalDate deadline) {
+        this.deadline = getAssignedDate().plusDays(14);
+    }
+
+    public LocalDate getDeadline() {
+        return deadline;
+    }
 
     // Constructor
-    public TodoItem(String description, boolean completed, int priority, Person createdBy) {
-        setDescription(description);
+    public TodoItem(String description,Person createdBy, boolean completed, int priority, LocalDate assignedDate,LocalDate deadline) {
+        setTitle(description);
         setCompleted(completed);
         setPriority(priority);
         setCreatedBy(createdBy);
+        setAssignedDate(assignedDate);
+        setDeadline(deadline);
     }
 
     // Getters and Setters
-    public String getDescription() {
-        return description;
+    public String getTitle() {
+        return title;
     }
 
-    public void setDescription(String description) {
-        if (description == null || description.isEmpty()) {
+    public void setTitle(String title) {
+        if (title == null || title.isEmpty()) {
             throw new IllegalArgumentException("Description cannot be null or empty");
         }
-        this.description = description;
+        this.title = title;
     }
 
     public boolean isCompleted() {
-        return completed;
+              return completed;
     }
 
     public void setCompleted(boolean completed) {
+
         this.completed = completed;
     }
 
@@ -59,19 +93,22 @@ public class TodoItem {
     }
 
     // Override toString(), equals(), and hashCode()
+
     @Override
     public String toString() {
         return "TodoItem{" +
-                "description='" + description + '\'' +
+                "description='" + title + '\'' +
                 ", completed=" + completed +
                 ", priority=" + priority +
                 ", createdBy=" + createdBy +
+                ", AssignedDate=" + AssignedDate +
+                ", deadline=" + deadline +
                 '}';
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(description, completed, priority, createdBy);
+        return Objects.hash(title, completed, priority, createdBy);
     }
 
     @Override
@@ -79,6 +116,6 @@ public class TodoItem {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         TodoItem todoItem = (TodoItem) o;
-        return completed == todoItem.completed && priority == todoItem.priority && Objects.equals(description, todoItem.description) && Objects.equals(createdBy, todoItem.createdBy);
+        return completed == todoItem.completed && priority == todoItem.priority && Objects.equals(title, todoItem.title) && Objects.equals(createdBy, todoItem.createdBy);
     }
 }
