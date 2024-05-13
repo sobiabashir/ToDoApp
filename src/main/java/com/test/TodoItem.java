@@ -14,25 +14,15 @@ public class TodoItem {
 
     private int todoId;
     private String title;
-    private boolean completed=false;
-    private int priority;
-    private Person createdBy;
-    private LocalDate AssignedDate;
+
+    private String description;
     private LocalDate deadline;
+    private boolean done = false;
 
-
-
-
-    public void setAssignedDate(LocalDate assignedDate) {
-        AssignedDate = LocalDate.now();
-    }
-
-    public LocalDate getAssignedDate() {
-        return AssignedDate;
-    }
+    private int AssigneeId;
 
     public void setDeadline(LocalDate deadline) {
-        this.deadline = getAssignedDate().plusDays(14);
+        this.deadline = LocalDate.now().plusDays(14);
     }
 
     public LocalDate getDeadline() {
@@ -40,13 +30,22 @@ public class TodoItem {
     }
 
     // Constructor
-    public TodoItem(String description,Person createdBy, boolean completed, int priority, LocalDate assignedDate,LocalDate deadline) {
-        setTitle(description);
-        setCompleted(completed);
-        setPriority(priority);
-        setCreatedBy(createdBy);
-        setAssignedDate(assignedDate);
+    public TodoItem(String title,String description , LocalDate deadline, boolean done,int AssigneeId) {
+        setTitle(title);
+        setDescription(description);
         setDeadline(deadline);
+        setCompleted(done);
+        setAssigneeId(AssigneeId);
+
+    }
+    public TodoItem(int id,String title,String description , LocalDate deadline, boolean done,int AssigneeId) {
+        setTodoId(id);
+        setTitle(title);
+        setDescription(description);
+        setDeadline(deadline);
+        setCompleted(done);
+        setAssigneeId(AssigneeId);
+
     }
 
     // Getters and Setters
@@ -62,60 +61,52 @@ public class TodoItem {
     }
 
     public boolean isCompleted() {
-              return completed;
+        return done;
     }
 
     public void setCompleted(boolean completed) {
 
-        this.completed = completed;
+        this.done = completed;
     }
 
-    public int getPriority() {
-        return priority;
+    public int getAssigneeId() {
+        return AssigneeId;
     }
 
-    public void setPriority(int priority) {
-        if (priority < 0) {
-            throw new IllegalArgumentException("Priority cannot be negative");
-        }
-        this.priority = priority;
+    public String getDescription() {
+        return description;
     }
 
-    public Person getCreatedBy() {
-        return createdBy;
+    public void setDescription(String description) {
+        this.description = description;
     }
-
-    public void setCreatedBy(Person createdBy) {
-        if (createdBy == null) {
-            throw new IllegalArgumentException("CreatedBy cannot be null");
-        }
-        this.createdBy = createdBy;
-    }
-
-    // Override toString(), equals(), and hashCode()
 
     @Override
     public String toString() {
         return "TodoItem{" +
-                "description='" + title + '\'' +
-                ", completed=" + completed +
-                ", priority=" + priority +
-                ", createdBy=" + createdBy +
-                ", AssignedDate=" + AssignedDate +
+                "todoId=" + todoId +
+                ", title='" + title + '\'' +
+                ", description='" + description + '\'' +
                 ", deadline=" + deadline +
+                ", done=" + done +
+                ", Assignee=" + AssigneeId +
                 '}';
     }
 
-    @Override
-    public int hashCode() {
-        return Objects.hash(title, completed, priority, createdBy);
+    public void setAssigneeId(int AssigneeId) {
+        this.AssigneeId = AssigneeId;
     }
 
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-        TodoItem todoItem = (TodoItem) o;
-        return completed == todoItem.completed && priority == todoItem.priority && Objects.equals(title, todoItem.title) && Objects.equals(createdBy, todoItem.createdBy);
+        if (!(o instanceof TodoItem)) return false;
+        TodoItem todoItem = ( TodoItem ) o;
+        return getTodoId() == todoItem.getTodoId() && done == todoItem.done && Objects.equals(getTitle(), todoItem.getTitle()) && Objects.equals(getDescription(), todoItem.getDescription()) && Objects.equals(getDeadline(), todoItem.getDeadline()) && Objects.equals(getAssigneeId(), todoItem.getAssigneeId());
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(getTodoId(), getTitle(), getDescription(), getDeadline(), done, getAssigneeId());
     }
 }

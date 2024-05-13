@@ -11,7 +11,7 @@ public interface TodoItemDAO<T> {
     Collection<T> findAll();
     Collection<T> findAllByDoneStatus(boolean status);
     Collection<T> findByTitleContains(String keyword);
-    Collection<T> findByPersonId(int personId);
+    Collection<T> findByAssigneeId(int personId);
     Collection<T> findByDeadlineBefore(LocalDate deadline);
     Collection<T> findByDeadlineAfter(LocalDate deadline);
     void remove(T object);

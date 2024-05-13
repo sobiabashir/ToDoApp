@@ -6,7 +6,8 @@ import java.util.List;
 public interface PersonDAO<T> {
     void persist(T object);
     T findById(int id);
-    T findByEmail(String email);
+    List<T> findByFirstName(String firstName);
+    List<T> findByLastName(String lastName);
     List<T> findAll();
     void remove(T object);
 }
